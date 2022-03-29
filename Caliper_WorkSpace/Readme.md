@@ -24,5 +24,20 @@ Since we used the test-network, we do not need to generate  crypto configuration
           path: "../DVS/test-network/organizations/peerOrganizations/org*.example.com/connection-org*.yaml"
           discover: true
 ```
+When we setup the network with multiple independent channels, service discovery fails. Because of this we can manually define the network configurations using [connection profiles](https://hyperledger.github.io/caliper/v0.3.2/fabric-config/) and disable service discovery.[sample](https://hyperledger.github.io/caliper/v0.3.2/fabric-config/#connection-profile-example)
 
+After we define the configuration file, we can run a test by this command:
+```
+cd $CALIPER_FOLDER_ROOT
+
+npx caliper launch manager \
+        --caliper-workspace . \
+        --caliper-benchconfig benchmarks/ComputeVSI.yaml \
+        --caliper-networkconfig networks/fabric-config.yaml \
+        --caliper-progress-reporting-interval 2000 \
+        --caliper-flow-only-test \
+        --caliper-worker-pollinterval 250 \
+        --caliper-fabric-gateway-enabled
+
+```
 
