@@ -1,0 +1,139 @@
+name: Fabric
+version: "2.0.0"
+
+caliper:
+    blockchain: fabric
+
+info:
+  Version: 2.3.3
+  Size: 3 Orgs with 3 Peers
+  Orderer: Solo
+  Distribution: Single Host
+  StateDB: CouchDB
+
+
+channels:
+    
+
+    - channelName: shard0
+      contracts:
+          - id: VSIContract0
+
+
+    - channelName: shard1
+      contracts:
+          - id: VSIContract1
+
+
+
+    - channelName: shard2
+      contracts:
+          - id: VSIContract2
+
+
+
+
+
+
+
+organizations:
+
+    - mspid: Org1MSP
+      peers:
+      - peer0.org1.example.com
+      certificateAuthorities:
+      - ca.org1.example.com
+      identities:
+          certificates:
+              - name: "admin1"
+                admin: "true"
+                clientPrivateKey:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/a28ea90f7d55e88f98359399630165ec4f13e082c93e3a4f9973c28ed1f321b7_sk"
+                clientSignedCert:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
+      connectionProfile:
+          path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org1.example.com/connection-org1.yaml"
+          discover: false
+
+    - mspid: Org2MSP
+      peers:
+      - peer0.org2.example.com
+      certificateAuthorities:
+      - ca.org2.example.com
+      identities:
+          certificates:
+              - name: "admin2"
+                admin: "true"
+                clientPrivateKey:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/keystore/0a2fc2f4d7704936100341949259d7c19c0e73653d3bfa758848d17400c85a8c_sk"
+                clientSignedCert:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp/signcerts/cert.pem"
+      connectionProfile:
+          path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org2.example.com/connection-org2.yaml"
+          discover: false
+
+
+    - mspid: Org3MSP
+      peers:
+      - peer0.org3.example.com
+      certificateAuthorities:
+      - ca.org3.example.com
+      identities:
+          certificates:
+              - name: "admin3"
+                admin: "true"
+                clientPrivateKey:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/keystore/1c377280b9ac8d27a7f338d4c60c99a766bde4683ce5eac0dd1a926659e64771_sk"
+                clientSignedCert:
+                    path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp/signcerts/cert.pem"
+      connectionProfile:
+          path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org3.example.com/connection-org3.yaml"
+          discover: false
+
+
+
+
+
+
+
+
+      
+orderers:
+    orderer.example.com:
+        url: grpcs://localhost:7050
+        grpcOptions:
+            ssl-target-name-override: orderer.example.com
+        tlsCACerts:
+            path: "../ScaleSFL-main/test-network/organizations/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
+
+
+
+
+peers:
+  peer0.org1.example.com:
+    url: grpcs://localhost:7052
+    grpcOptions:
+      ssl-target-name-override: peer0.org1.example.com
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/tlscacerts/tls-localhost-7054-ca-org1.pem"
+
+  peer0.org2.example.com:
+    url: grpcs://localhost:9052
+    grpcOptions:
+      ssl-target-name-override: peer0.org2.example.com
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/tlscacerts/tls-localhost-8054-ca-org2.pem"
+
+  peer0.org3.example.com:
+    url: grpcs://localhost:11052
+    grpcOptions:
+      ssl-target-name-override: peer0.org3.example.com
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: "../ScaleSFL-main/test-network/organizations/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/tlscacerts/tls-localhost-11054-ca-org3.pem"
+
+
+
+

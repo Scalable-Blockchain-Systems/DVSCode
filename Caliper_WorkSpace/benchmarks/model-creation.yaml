@@ -1,0 +1,22 @@
+
+test:
+    name: VSIContract-ComputeVSI-benchmark
+    description: test benchmark
+    workers:
+      type: local
+      number: 3
+    rounds:
+      - label: 	ComputeVSI -SHARDING
+        description: Compute VSI benchmark 
+        #txDuration: 30
+        rateControl: 
+          type: fixed-rate
+          opts:
+            tps: 50
+        txNumber: 8000
+        workload:
+          module: workload/LocalController.js
+          arguments:
+               contractId: VSIContract
+               assets: [1,2,3]
+

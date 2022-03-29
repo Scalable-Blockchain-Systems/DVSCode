@@ -1,0 +1,21 @@
+test:
+    name: VSIContract-LocalController-benchmark
+    description: test benchmark
+    workers:
+      type: local
+      number: 3
+    rounds:
+      - label: 	LocalController
+        description: LOcalController benchmark 
+        #txDuration: 30
+        rateControl: 
+          type: fixed-rate
+          opts:
+            tps: 1000
+        txNumber: 8000
+        workload:
+          module: workload/LocalController.js
+          arguments:
+            assets: [1,2,3]
+            contractId: VSIContract
+
