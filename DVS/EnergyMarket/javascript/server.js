@@ -58,7 +58,7 @@ async function main() {
 
                 const contract = network.getContract('VSIContract4');
                 console.log("Compute VSI")
-                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[0], '123');
+                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[1], '123');
 
             }
             else if (req.body.shard == 2) {
@@ -74,7 +74,7 @@ async function main() {
 
                 const contract = network.getContract('VSIContract3');
                 console.log("Compute VSI")
-                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[0], '123');
+                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[1], '122');
 
             }
             else if (req.body.shard == 1) {
@@ -91,7 +91,7 @@ async function main() {
 
                 const contract = network.getContract('VSIContract2');
                 console.log("Compute VSI")
-                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[0], '123');
+                result = await contract.submitTransaction('ComputeVSI', req.body.bus, req.body.branch, req.body.VSC, req.body.group, threshold[1], '121');
 
             }
             else {
@@ -185,9 +185,10 @@ async function main() {
             console.log(`Transaction has been evaluated, result is: ${result}`);
 
             //initialize resources
-            var result = await contract.submitTransaction('UpdateResources', 'g1', '[1.5,0,1.5,1.5,1.5]');
-            var result = await contract.submitTransaction('UpdateResources', 'g2', '[1.5,1.5,1.5,1.5,1.5,0,0,1.5,1.5,1.5,0,1.5,1.5,1.5]');
-            var result = await contract.submitTransaction('UpdateResources', 'g3', '[1.5,1.5,0,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5]');
+            var result = await contract.submitTransaction('InitResources', '[0,1]', '[1.5,0,1.5,1.5,1.5]');
+            console.log(`Transaction has been evaluated, result is: ${result}`);
+            var result = await contract.submitTransaction('InitResources', '[0,2]', '[1.5,1.5,1.5,1.5,1.5,0,0,1.5,1.5,1.5,0,1.5,1.5,1.5]');
+            var result = await contract.submitTransaction('InitResources', '[0,3]', '[1.5,1.5,0,1.5,1.5,1.5,1.5,1.5,1.5,1.5,1.5]');
 
 
 
@@ -264,7 +265,7 @@ async function main() {
 
 
 
-            console.log("initial Local Controller-VSIContract3")
+            console.log("initial Local Controller-VSIContract2")
             var result = await contract3.submitTransaction('InitialLocalController', 'lc1', req.body.PI_group1, req.body.J_group1);
             var result = await contract3.submitTransaction('InitialLocalController', 'lc1_2', req.body.PI_group1_2, req.body.J_group1_2);
             var result = await contract3.submitTransaction('InitialLocalController', 'lc2_3', req.body.PI_group2_3, req.body.J_group2_3);
