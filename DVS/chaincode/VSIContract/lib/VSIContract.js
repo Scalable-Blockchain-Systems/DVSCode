@@ -68,8 +68,8 @@ class VSIContract extends Contract {
         // console.log(status.sources!=sources);
         group_Id = "";
         var merge = false;
-        for (let i = 0; i < IDs.length; i++) {
-            if (i == 0) {
+        for (let i = 1; i < IDs.length; i++) {
+            if (i == 1) {
                 group_Id = group_Id + IDs[i];
             } else {
                 group_Id = group_Id + "_" + IDs[i];
@@ -631,7 +631,7 @@ class VSIContract extends Contract {
         localController.PI = PI;
         localController.J = J;
         console.log(localController);
-        await ctx.stub.putState(ID, Buffer.from(JSON.stringify(localController1)));
+        await ctx.stub.putState(ID, Buffer.from(JSON.stringify(localController)));
 
 
         return 1;

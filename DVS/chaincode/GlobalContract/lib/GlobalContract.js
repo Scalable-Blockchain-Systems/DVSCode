@@ -42,9 +42,9 @@ class GlobalContract extends Contract {
 
     async SearchForAvailableGroup(ctx, ID) {
         var ID = JSON.parse(ID);
-        if (ID.length > 1)
+        if (ID.length > 2)
             throw new Error(`Error Message from SearchForAvailableGroup: for group with groupId = ${ID} no adjacent group available.`);
-        var orderAsBytes = await ctx.stub.getState("g" + ID[0]);
+        var orderAsBytes = await ctx.stub.getState("g" + ID[1]);
         if (!orderAsBytes || orderAsBytes.length === 0) {
             throw new Error(`Error Message from SearchForAvailableGroup: group with groupId = ${ID} does not exist.`);
         }
@@ -52,7 +52,7 @@ class GlobalContract extends Contract {
         var group = JSON.parse(orderAsBytes);
         var adjacent = JSON.parse(group.adjacent);
 
-        for (let i = 0; i < adjacent.length; i++) {
+        for (let i = 1; i < adjacent.length; i++) {
             var orderAsBytes = await ctx.stub.getState("g" + adjacent[i]);
             if (!orderAsBytes || orderAsBytes.length === 0) {
                 throw new Error(`Error Message from UpdateResources: group with groupId = ${adjacent[i]} does not exist.`);
@@ -68,30 +68,40 @@ class GlobalContract extends Contract {
     }
     async UpdateResources(ctx, ID, resources) {
         var ID = JSON.parse(ID);
-        // if (!split) {
-        //     var orderAsBytes = await ctx.stub.getState("g" + ID[0]);
-        //     if (!orderAsBytes || orderAsBytes.length === 0) {
-        //         throw new Error(`Error Message from UpdateResources: group with groupId = ${ID[0]} does not exist.`);
-        //     }
-        //     var group = JSON.parse(orderAsBytes);
-        //     group.resources = resources;
-        //     await ctx.stub.putState("g" + ID[0], Buffer.from(JSON.stringify(group)));
-        //     return 1;
-        // }
-        // else {
-            for (let i = 0; i < ID.length; i++) {
-                if (resources.length == 0)
-                    break;
-                var orderAsBytes = await ctx.stub.getState("g" + ID[i]);
-                if (!orderAsBytes || orderAsBytes.length === 0) {
-                    throw new Error(`Error Message from UpdateResources: group with groupId = ${ID[i]} does not exist.`);
-                }
-                var group = JSON.parse(orderAsBytes);
-                var res = JSON.parse(group.resources);
-                group.resources = resources.splice(0, res.length);
-                await ctx.stub.putState("g" + ID[i], Buffer.from(JSON.stringify(group)));
+        var log = {}
+        for (let i = 1; i < ID.length; i++) {
+            if (resources.length == 0)
+                break;
+            var orderAsBytes = await ctx.stub.getState("g" + ID[i]);
+            if (!orderAsBytes || orderAsBytes.length === 0) {
+                throw new Error(`Error Message from UpdateResources: group with groupId = ${ID[i]} does not exist.`);
             }
-        // }
+            var group = JSON.parse(orderAsBytes);
+            var res = JSON.parse(group.resources);
+            var temp = res.splice(0, res.length);
+            log.temp = temp;
+            log.res = res;
+            group.resources = JSON.stringify(temp);
+            log.group = group;
+            await ctx.stub.putState("g" + ID[i], Buffer.from(JSON.stringify(group)));
+        }
+
+        return JSON.stringify(log);
+    }
+
+    async InitResources(ctx, ID, resources) {
+        var ID = JSON.parse(ID);
+
+        var orderAsBytes = await ctx.stub.getState("g" + ID[1]);
+        if (!orderAsBytes || orderAsBytes.length === 0) {
+            throw new Error(`Error Message from UpdateResources: group with groupId = ${ID[1]} does not exist.`);
+        }
+        var group = JSON.parse(orderAsBytes);
+        group.resources = resources;
+        await ctx.stub.putState("g" + ID[1], Buffer.from(JSON.stringify(group)));
+        return 1;
+
+
     }
 
 
@@ -148,42 +158,42 @@ class GlobalContract extends Contract {
         group1.Id = 'g1';
         group1.Impedance = data1;
         group1.adjacent = '[2,3]';
-        group1.resources='[]';
+        group1.resources = '[]';
 
         await ctx.stub.putState('g1', Buffer.from(JSON.stringify(group1)));
         var group2 = {};
         group2.Id = 'g2';
         group2.Impedance = data2;
         group2.adjacent = '[1,3]';
-        group2.resources='[]';
+        group2.resources = '[]';
 
         await ctx.stub.putState('g2', Buffer.from(JSON.stringify(group2)));
         var group3 = {};
         group3.Id = 'g3';
         group3.Impedance = data3;
         group3.adjacent = '[1,3]';
-        group3.resources='[]';
+        group3.resources = '[]';
         await ctx.stub.putState('g3', Buffer.from(JSON.stringify(group3)));
 
         var group12 = {};
         group12.Id = 'g1_2';
         group12.Impedance = data12;
         group12.adjacent = '[3]';
-        group12.resources='[]';
+        group12.resources = '[]';
         await ctx.stub.putState('g12', Buffer.from(JSON.stringify(group12)));
 
         var group13 = {};
         group13.Id = 'g1_3';
         group13.Impedance = data13;
         group13.adjacent = '[2]';
-        group13.resources='[]';
+        group13.resources = '[]';
         await ctx.stub.putState('g13', Buffer.from(JSON.stringify(group13)));
 
         var group23 = {};
         group23.Id = 'g1_2';
         group23.Impedance = data23;
         group23.adjacent = '[1]';
-        group23.resources='[]';
+        group23.resources = '[]';
         await ctx.stub.putState('g23', Buffer.from(JSON.stringify(group23)));
 
         return 1;
