@@ -54,12 +54,14 @@ At the Matlab, first we need to initialize the grouping and constant values of o
 ```
 cd Matlab
 
-Matlab command window:
+Matlab command window enter:
 
-Initialize_grouping
+Initial_Grouping
 
-
+ClientServer
 
 ```
+
+The ClientServer.m allows to choose groups, change the load of each bus, and send a request to Blockchain through Fabric SDK.
 
 
